@@ -52,7 +52,7 @@ public class DemoQATest {
     String state = "NCR";
     String city = "Delhi";
 
-    @Test // not found and click Sports checkbox
+    @Test // passed
     public void fillForm() {
         driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(firstName);
         driver.findElement(By.xpath("//*[@id='lastName']")).sendKeys(lastName);
@@ -65,7 +65,7 @@ public class DemoQATest {
         driver.findElement(By.xpath("//*[contains(@class, 'react-datepicker__day') and contains(text(), '" + date + "')]")).click();
         driver.findElement(By.xpath("//*[@id='subjectsInput']")).sendKeys(subjects);
         driver.findElement(By.xpath("//*[@id='subjectsInput']")).sendKeys(Keys.RETURN);
-//        driver.findElement(By.xpath("//label[contains(text(),'Sports')]")).click();
+        driver.findElement(By.cssSelector("label[for='hobbies-checkbox-2']")).click();
         driver.findElement(By.xpath("//*[@id='uploadPicture']")).sendKeys(filePath);
         driver.findElement(By.xpath("//*[@id='currentAddress']")).sendKeys(currentAddress);
         driver.findElement(By.xpath("//*[@id='react-select-3-input']")).sendKeys(state);
@@ -80,7 +80,7 @@ public class DemoQATest {
         Assertions.assertEquals(userNumber, driver.findElement(By.xpath("//tr[4]/td[2]")).getText());
         Assertions.assertEquals(date + " " + month + "," + year, driver.findElement(By.xpath("//tr[5]/td[2]")).getText());
         Assertions.assertEquals(subjects, driver.findElement(By.xpath("//tr[6]/td[2]")).getText());
-//        Assertions.assertEquals("Sports", driver.findElement(By.xpath("//tr[7]/td[2]")).getText());
+        Assertions.assertEquals("Reading", driver.findElement(By.cssSelector("label[for='hobbies-checkbox-2']")).getText());
         Assertions.assertEquals(file.getName(), driver.findElement(By.xpath("//tr[8]/td[2]")).getText());
         Assertions.assertEquals(currentAddress, driver.findElement(By.xpath("//tr[9]/td[2]")).getText());
         Assertions.assertEquals(state + " " + city, driver.findElement(By.xpath("//tr[10]/td[2]")).getText());
@@ -93,10 +93,10 @@ public class DemoQATest {
         assertEquals(sportsHobby.getAttribute("checked"), "true");
     }
 
-    @Test // not passed
+    @Test // passed
     public void testingCheckboxVisible() {
-        WebElement sportsHobby = driver.findElement(By.xpath("//*[@id='hobbies-checkbox-1']"));
-        Assertions.assertTrue(sportsHobby.isDisplayed());
+        WebElement readingHobby = driver.findElement(By.cssSelector("label[for='hobbies-checkbox-2']"));
+        Assertions.assertTrue(readingHobby.isDisplayed());
     }
 
     @Test // passed

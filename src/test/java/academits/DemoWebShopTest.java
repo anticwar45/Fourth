@@ -13,11 +13,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 public class DemoWebShopTest {
 
     WebDriver driver;
-
     String browser = System.getProperty("browser");
 
     @BeforeEach
@@ -34,17 +36,20 @@ public class DemoWebShopTest {
         }
         driver.get("https://demowebshop.tricentis.com");
         driver.manage().window().maximize();
+
     }
 
     @ParameterizedTest // passed
     @CsvSource({"Laptop", "Smartphone", "Fiction"})
 
     public void addGoodToCart(String good) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
         driver.findElement(By.xpath("//*[@id='small-searchterms']")).sendKeys(good);
         driver.findElement(By.xpath("//*[@id='small-searchterms']")).sendKeys(Keys.RETURN);
         Assertions.assertEquals("https://demowebshop.tricentis.com/search?q=" + good, driver.getCurrentUrl());
         String item = driver.findElement(By.xpath("//*[@class='product-grid']/div[1]//h2/a")).getText();
         driver.findElement(By.xpath("//*[@class='product-grid']/div[1]//*[@value='Add to cart']")).click();
+        wait.until(ExpectedConditions.textToBe(By.xpath("//span[@class='cart-qty']"), "(1)"));
         driver.findElement(By.xpath("//*[contains(text(),'Shopping cart')]")).click();
         Assertions.assertEquals(item, driver.findElement(By.xpath("//tr[1]//a[@class='product-name']")).getText());
     }
